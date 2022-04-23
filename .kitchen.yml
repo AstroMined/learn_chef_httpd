@@ -1,19 +1,89 @@
+# Ryan Peterson Student ID: 000980429
 ---
+
+# Developed locally using Vagrant driver
 driver:
   name: vagrant
 
+# Using Chef Zero as an in-memory Chef server for testing purposes
 provisioner:
   name: chef_zero
   product_name: chef
   product_version: 14.12.9
+
+# Using Chef InSpec as the automated testing framework
 verifier:
   name: inspec
 
+# Operating System that will be used by the virtual machines
 platforms:
   - name: centos-7
 
+# For testing purposes, all servers will be built with the
+# learn_chef_httpd cookbook sourced from GitHub at:
+# https://github.com/chef/learn_chef_httpd
 suites:
-  - name: default
+
+# Satellite Terminal Server
+  - name: satellite_terminal_server
+    driver:
+      vm_hostname: terminal.satelliteads.local
+    run_list:
+      - recipe[learn_chef_httpd::default]
+    attributes:
+
+# Master Time Server
+  - name: master_time_server
+    driver:
+      vm_hostname: time.satelliteads.local
+    run_list:
+      - recipe[learn_chef_httpd::default]
+    attributes:
+
+# Web Server
+  - name: web_server
+    driver:
+      vm_hostname: web.satelliteads.local
+    run_list:
+      - recipe[learn_chef_httpd::default]
+    attributes:
+
+# Database Server
+  - name: database_server
+    driver:
+      vm_hostname: database.satelliteads.local
+    run_list:
+      - recipe[learn_chef_httpd::default]
+    attributes:
+
+# Scaled Satellite Terminal Server
+  - name: scaled_satellite_terminal_server
+    driver:
+      vm_hostname: scaled-terminal.satelliteads.local
+    run_list:
+      - recipe[learn_chef_httpd::default]
+    attributes:
+
+# Scaled Web Server
+  - name: scaled_web_server
+    driver:
+      vm_hostname: scaled-web.satelliteads.local
+    run_list:
+      - recipe[learn_chef_httpd::default]
+    attributes:
+
+# Scaled Time Server
+  - name: scaled_time_server
+    driver:
+      vm_hostname: scaled-time.satelliteads.local
+    run_list:
+      - recipe[learn_chef_httpd::default]
+    attributes:
+ 
+# Scaled Database Server
+  - name: scaled_database_server
+    driver:
+      vm_hostname: scaled-database.satelliteads.local
     run_list:
       - recipe[learn_chef_httpd::default]
     attributes:
